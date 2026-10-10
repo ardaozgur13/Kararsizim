@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Yetki Oylamasından Geçemedin (403) — kararsızım{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 620px; margin: 2rem auto; text-align: center;">
+  <span style="font-size: 3rem; display: block; margin-bottom: 0.5rem;" aria-hidden="true">⛔⚖️</span>
+  <h1 style="font-size: 1.75rem; color: var(--blue-900); margin-bottom: 0.5rem;">
+    Yetki Oylamasından Geçemedin!
+  </h1>
+  <p style="color: var(--muted); font-size: 1rem; margin-bottom: 1.75rem;">
+    Bu işlemi yapmaya veya bu sayfaya erişmeye iznin bulunmuyor. Topluluk şöyle düşünüyor:
+  </p>
+
+  <!-- Espirili Sahte Anket Sonucu Kartı -->
+  <div class="results-list" style="text-align: left; margin-bottom: 2rem;" role="region" aria-label="403 Hata Dağılımı">
+    <div class="result-item user-voted">
+      <div class="result-bar-bg" data-percentage="78" style="width: 78%;"></div>
+      <div class="result-content">
+        <div class="result-label">
+          <span>Başkasına ait bir anketi silmeye çalışıyordun</span>
+          <span class="vote-badge">✓ Sebep</span>
+        </div>
+        <div class="result-stats">
+          <span class="result-percentage">%78</span>
+          <span class="result-count">(780 oy)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-bar-bg" data-percentage="22" style="width: 22%;"></div>
+      <div class="result-content">
+        <div class="result-label">
+          <span>Yetkisiz bir kapıyı tıklattın</span>
+        </div>
+        <div class="result-stats">
+          <span class="result-percentage">%22</span>
+          <span class="result-count">(220 oy)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+    <a href="{% url 'home' %}" class="btn btn-primary">
+      &larr; Güvenli Bölgeye (Anasayfaya) Dön
+    </a>
+  </div>
+</div>
+{% endblock %}

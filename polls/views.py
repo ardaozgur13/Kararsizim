@@ -262,3 +262,25 @@ def my_polls_view(request):
         "polls/my_polls.html",
         {"page_obj": page_obj, "polls": page_obj.object_list},
     )
+
+
+# ------------------ Özel Hata Sayfaları (Bölüm 6 & DEBUG=False) ------------------
+
+def custom_404_view(request, exception=None):
+    """Özel 404 Sayfa Bulunamadı yanıtı (esprili anket temalı)."""
+    return render(request, "404.html", status=404)
+
+
+def custom_500_view(request):
+    """Özel 500 Sunucu Hatası yanıtı."""
+    return render(request, "500.html", status=500)
+
+
+def custom_403_view(request, exception=None):
+    """Özel 403 Erişim Engellendi yanıtı."""
+    return render(request, "403.html", status=403)
+
+
+def custom_400_view(request, exception=None):
+    """Özel 400 Geçersiz İstek yanıtı."""
+    return render(request, "400.html", status=400)

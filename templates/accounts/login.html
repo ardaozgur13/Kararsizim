@@ -20,7 +20,7 @@
       <label class="form-label" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
       {{ form.username }}
       {% if form.username.errors %}
-        <div class="form-error">{{ form.username.errors.0 }}</div>
+        <div class="form-error" role="alert">{{ form.username.errors.0 }}</div>
       {% endif %}
     </div>
 
@@ -28,12 +28,12 @@
       <label class="form-label" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
       {{ form.password }}
       {% if form.password.errors %}
-        <div class="form-error">{{ form.password.errors.0 }}</div>
+        <div class="form-error" role="alert">{{ form.password.errors.0 }}</div>
       {% endif %}
     </div>
 
     {% if form.non_field_errors %}
-      <div class="form-error" style="margin-bottom: 1rem;">
+      <div class="form-error" role="alert" style="margin-bottom: 1rem;">
         {{ form.non_field_errors.0 }}
       </div>
     {% endif %}

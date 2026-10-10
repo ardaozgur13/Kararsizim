@@ -36,7 +36,8 @@
       <form id="vote-form" method="post" action="{% url 'vote_poll' poll.id %}">
         {% csrf_token %}
 
-        <div class="vote-options-group">
+        <fieldset class="vote-options-group" style="border: none; padding: 0; margin: 0 0 1.5rem 0;">
+          <legend class="sr-only">Lütfen oy vermek istediğiniz seçeneği belirleyin</legend>
           {% for option in poll.options.all %}
             <label class="vote-option-card" for="opt-{{ option.id }}">
               <input
@@ -49,7 +50,7 @@
               <span class="vote-option-text">{{ option.text }}</span>
             </label>
           {% endfor %}
-        </div>
+        </fieldset>
 
         <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.5rem;">
           <button type="submit" id="vote-submit-btn" class="btn btn-primary btn-full">
@@ -74,10 +75,19 @@
       </span>
     </div>
 
-    <div class="results-list">
+    <div class="results-list" role="region" aria-label="Anket oy dağılımı">
       {% for opt in results_data.options %}
         <div class="result-item {% if opt.is_selected %}user-voted{% endif %}">
-          <div class="result-bar-bg" data-percentage="{{ opt.percentage }}" style="width: 0%;"></div>
+          <div
+            class="result-bar-bg"
+            data-percentage="{{ opt.percentage }}"
+            style="width: 0%;"
+            role="progressbar"
+            aria-valuenow="{{ opt.percentage }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="{{ opt.text }}: yüzde {{ opt.percentage }}"
+          ></div>
           <div class="result-content">
             <div class="result-label">
               <span>{{ opt.text }}</span>

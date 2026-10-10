@@ -37,7 +37,7 @@
         Kullanıcıların seçebileceği alternatifleri belirle.
       </p>
 
-      <div id="options-container">
+      <div id="options-container" aria-live="polite">
         {% for option_val in submitted_options %}
           <div class="option-row" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem;">
             <input
@@ -45,6 +45,7 @@
               name="options"
               class="form-control"
               placeholder="Seçenek {{ forloop.counter }}"
+              aria-label="Seçenek {{ forloop.counter }}"
               value="{{ option_val }}"
               maxlength="100"
               required
@@ -52,7 +53,7 @@
             <button
               type="button"
               class="btn btn-outline btn-sm remove-option-btn"
-              aria-label="Seçeneği sil"
+              aria-label="Seçeneği kaldır"
               {% if submitted_options|length <= 2 %}disabled style="opacity: 0.3;"{% endif %}
             >
               ✕

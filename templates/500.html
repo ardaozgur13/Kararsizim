@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Sunucu Kararsız Kaldı (500) — kararsızım{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 620px; margin: 2rem auto; text-align: center;">
+  <span style="font-size: 3rem; display: block; margin-bottom: 0.5rem;" aria-hidden="true">🤯⚙️</span>
+  <h1 style="font-size: 1.75rem; color: var(--blue-900); margin-bottom: 0.5rem;">
+    Sunucumuz da İki Arada Bir Derede Kaldı!
+  </h1>
+  <p style="color: var(--muted); font-size: 1rem; margin-bottom: 1.75rem;">
+    Beklenmedik bir durum oluştu ve sunucumuz hangi yanıtı vereceği konusunda kararsız kaldı. Hemen topluluğa danıştık:
+  </p>
+
+  <!-- Espirili Sahte Anket Sonucu Kartı -->
+  <div class="results-list" style="text-align: left; margin-bottom: 2rem;" role="region" aria-label="500 Hata Çözüm Dağılımı">
+    <div class="result-item user-voted">
+      <div class="result-bar-bg" data-percentage="62" style="width: 62%;"></div>
+      <div class="result-content">
+        <div class="result-label">
+          <span>Sayfayı yenileyip bir şans daha verelim</span>
+          <span class="vote-badge">✓ Önerilen</span>
+        </div>
+        <div class="result-stats">
+          <span class="result-percentage">%62</span>
+          <span class="result-count">(620 oy)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-bar-bg" data-percentage="38" style="width: 38%;"></div>
+      <div class="result-content">
+        <div class="result-label">
+          <span>Geliştiricilere bir çay ısmarlayıp düzeltmelerini bekleyelim</span>
+        </div>
+        <div class="result-stats">
+          <span class="result-percentage">%38</span>
+          <span class="result-count">(380 oy)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+    <button onclick="window.location.reload();" class="btn btn-primary" type="button">
+      🔄 Sayfayı Yenile
+    </button>
+    <a href="{% url 'home' %}" class="btn btn-secondary">
+      &larr; Anasayfaya Dön
+    </a>
+  </div>
+</div>
+{% endblock %}

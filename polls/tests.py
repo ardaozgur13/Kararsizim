@@ -273,3 +273,43 @@ class PollsTests(TestCase):
         response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "1</strong> oy")
+
+    # ------------------ Özel Hata Sayfaları Testleri (Aşama 4/5) ------------------
+
+    def test_custom_404_page(self):
+        """Var olmayan URL istendiğinde özel esprili 404 sayfası dönmeli."""
+        response = self.client.get("/bu-sayfa-kesinlikle-mevcut-degil-404/")
+        self.assertEqual(response.status_code, 404)
+        self.assertTemplateUsed(response, "404.html")
+        self.assertContains(response, "Anket Sonuçlandı: Sayfa Bulunamadı!", status_code=404)
+        self.assertContains(response, "Yanlış veya eski bir bağlantıya tıkladın", status_code=404)
+
+    def test_custom_403_page(self):
+        """403 görünümü çağrıldığında 403 şablonu ve doğru durum kodu dönmeli."""
+        from .views import custom_403_view
+        from django.test import RequestFactory
+        factory = RequestFactory()
+        request = factory.get("/gizli/")
+        response = custom_403_view(request)
+        self.assertEqual(response.status_code, 403)
+        self.assertIn("Yetki Oylamasından Geçemedin!", response.content.decode("utf-8"))
+
+    def test_custom_500_page(self):
+        """500 görünümü çağrıldığında 500 şablonu ve doğru durum kodu dönmeli."""
+        from .views import custom_500_view
+        from django.test import RequestFactory
+        factory = RequestFactory()
+        request = factory.get("/hata/")
+        response = custom_500_view(request)
+        self.assertEqual(response.status_code, 500)
+        self.assertIn("Sunucumuz da İki Arada Bir Derede Kaldı!", response.content.decode("utf-8"))
+
+    def test_custom_400_page(self):
+        """400 görünümü çağrıldığında 400 şablonu ve doğru durum kodu dönmeli."""
+        from .views import custom_400_view
+        from django.test import RequestFactory
+        factory = RequestFactory()
+        request = factory.get("/gecersiz/")
+        response = custom_400_view(request)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("İstek Oylamasında Çelişki Var!", response.content.decode("utf-8"))

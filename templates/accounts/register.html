@@ -19,10 +19,10 @@
       <label class="form-label" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
       {{ form.username }}
       {% if form.username.help_text %}
-        <div class="form-help">{{ form.username.help_text }}</div>
+        <div id="username-help" class="form-help">{{ form.username.help_text }}</div>
       {% endif %}
       {% if form.username.errors %}
-        <div class="form-error">{{ form.username.errors.0 }}</div>
+        <div id="username-error" class="form-error" role="alert">{{ form.username.errors.0 }}</div>
       {% endif %}
     </div>
 
@@ -30,10 +30,10 @@
       <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
       {{ form.email }}
       {% if form.email.help_text %}
-        <div class="form-help">{{ form.email.help_text }}</div>
+        <div id="email-help" class="form-help">{{ form.email.help_text }}</div>
       {% endif %}
       {% if form.email.errors %}
-        <div class="form-error">{{ form.email.errors.0 }}</div>
+        <div id="email-error" class="form-error" role="alert">{{ form.email.errors.0 }}</div>
       {% endif %}
     </div>
 
@@ -41,7 +41,7 @@
       <label class="form-label" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
       {{ form.password }}
       {% if form.password.errors %}
-        <div class="form-error">{{ form.password.errors.0 }}</div>
+        <div id="password-error" class="form-error" role="alert">{{ form.password.errors.0 }}</div>
       {% endif %}
     </div>
 
@@ -49,12 +49,12 @@
       <label class="form-label" for="{{ form.password_confirm.id_for_label }}">{{ form.password_confirm.label }}</label>
       {{ form.password_confirm }}
       {% if form.password_confirm.errors %}
-        <div class="form-error">{{ form.password_confirm.errors.0 }}</div>
+        <div id="password-confirm-error" class="form-error" role="alert">{{ form.password_confirm.errors.0 }}</div>
       {% endif %}
     </div>
 
     {% if form.non_field_errors %}
-      <div class="form-error" style="margin-bottom: 1rem;">
+      <div class="form-error" role="alert" style="margin-bottom: 1rem;">
         {{ form.non_field_errors.0 }}
       </div>
     {% endif %}

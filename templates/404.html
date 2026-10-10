@@ -3,12 +3,67 @@
 {% block title %}Sayfa Bulunamadı (404) — kararsızım{% endblock %}
 
 {% block content %}
-<div class="card empty-state" style="margin-top: 2rem;">
-  <span class="empty-state-icon">🤔</span>
-  <h2>Sayfa Bulunamadı</h2>
-  <p class="empty-state-text">Aradığın sayfa veya anket mevcut değil ya da silinmiş olabilir.</p>
-  <div>
-    <a href="{% url 'home' %}" class="btn btn-primary">Anasayfaya Dön</a>
+<div class="card" style="max-width: 620px; margin: 2rem auto; text-align: center;">
+  <span style="font-size: 3rem; display: block; margin-bottom: 0.5rem;" aria-hidden="true">🤔⚖️</span>
+  <h1 style="font-size: 1.75rem; color: var(--blue-900); margin-bottom: 0.5rem;">
+    Anket Sonuçlandı: Sayfa Bulunamadı!
+  </h1>
+  <p style="color: var(--muted); font-size: 1rem; margin-bottom: 1.75rem;">
+    Aradığın sayfa veya anket mevcut değil. Topluluğa <em>"Bu sayfaya ne olmuş olabilir?"</em> diye sorduk ve sonuçlar şöyle çıktı:
+  </p>
+
+  <!-- Espirili Sahte Anket Sonucu Kartı -->
+  <div class="results-list" style="text-align: left; margin-bottom: 2rem;" role="region" aria-label="404 Hata Nedenleri Dağılımı">
+    <div class="result-item user-voted">
+      <div class="result-bar-bg" data-percentage="54" style="width: 54%;"></div>
+      <div class="result-content">
+        <div class="result-label">
+          <span>Yanlış veya eski bir bağlantıya tıkladın</span>
+          <span class="vote-badge">✓ En Çok Oy</span>
+        </div>
+        <div class="result-stats">
+          <span class="result-percentage">%54</span>
+          <span class="result-count">(540 oy)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-bar-bg" data-percentage="34" style="width: 34%;"></div>
+      <div class="result-content">
+        <div class="result-label">
+          <span>Anket sahibi kararını verip anketi sildi</span>
+        </div>
+        <div class="result-stats">
+          <span class="result-percentage">%34</span>
+          <span class="result-count">(340 oy)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-bar-bg" data-percentage="12" style="width: 12%;"></div>
+      <div class="result-content">
+        <div class="result-label">
+          <span>Biz de kararsız kaldık ve sayfa kayboldu</span>
+        </div>
+        <div class="result-stats">
+          <span class="result-percentage">%12</span>
+          <span class="result-count">(120 oy)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+    <a href="{% url 'home' %}" class="btn btn-primary">
+      &larr; Anasayfaya Dön & Anketleri Gör
+    </a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'create_poll' %}" class="btn btn-secondary">
+        + Yeni Bir Anket Başlat
+      </a>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
