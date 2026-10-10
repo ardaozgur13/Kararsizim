@@ -138,6 +138,7 @@ if not DEBUG:
     }
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Auth URLs
 LOGIN_URL = 'login'
