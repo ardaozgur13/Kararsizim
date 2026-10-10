@@ -35,10 +35,11 @@
   </div>
 
   <footer class="poll-card-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--cream-200); padding-top: 0.75rem; font-size: 0.85rem; color: var(--muted);">
-    <span>
-      <!-- Toplam oy sayısı (Aşama 3'te dinamikleşecek) -->
-      💬 {{ poll.options.count }} seçenek
-    </span>
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <span>🗳️ <strong>{{ poll.total_votes_count|default:0 }}</strong> oy</span>
+      <span>&bull;</span>
+      <span>💬 {{ poll.options.count }} seçenek</span>
+    </div>
     <a href="{% url 'poll_detail' poll.id %}" class="btn btn-outline btn-sm">
       Ankete Git &rarr;
     </a>

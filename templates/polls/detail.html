@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
-{% load humanize %}
+{% load humanize static %}
 
 {% block title %}{{ poll.question }} — kararsızım{% endblock %}
 
 {% block content %}
 <div class="card poll-detail-card" style="margin-top: 1rem;">
-  <header style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+  <!-- Başlık ve Yazar Bilgisi -->
+  <header style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
     <div>
       <span class="user-badge" style="font-size: 1rem;">@{{ poll.author.username }}</span>
       <span style="color: var(--muted); font-size: 0.9rem; margin-left: 0.4rem;">
@@ -23,27 +24,97 @@
     {% endif %}
   </header>
 
-  <h1 style="font-size: 1.6rem; margin-bottom: 1.5rem; color: var(--blue-900);">
+  <h1 style="font-size: 1.65rem; margin-bottom: 1.75rem; color: var(--blue-900);">
     {{ poll.question }}
   </h1>
 
-  <!-- Seçenekler Listesi (Aşama 2 Önizlemesi) -->
-  <div class="poll-options-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
-    {% for option in poll.options.all %}
-      <div style="background-color: var(--blue-100); color: var(--blue-900); padding: 0.85rem 1.15rem; border-radius: var(--radius-card); font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: space-between;">
-        <span>{{ option.text }}</span>
-        <span style="color: var(--muted); font-size: 0.85rem; font-weight: 600;">Seçenek {{ forloop.counter }}</span>
-      </div>
-    {% endfor %}
-  </div>
+  <!-- 1. OY VERME ALANI (Oy verilmediyse görünür) -->
+  {% if not show_results %}
+    <section id="vote-section">
+      <div id="vote-error-alert" class="alert alert-danger" style="display: none; margin-bottom: 1rem;"></div>
 
-  <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--cream-200); padding-top: 1.25rem;">
+      <form id="vote-form" method="post" action="{% url 'vote_poll' poll.id %}">
+        {% csrf_token %}
+
+        <div class="vote-options-group">
+          {% for option in poll.options.all %}
+            <label class="vote-option-card" for="opt-{{ option.id }}">
+              <input
+                type="radio"
+                name="option_id"
+                id="opt-{{ option.id }}"
+                value="{{ option.id }}"
+                required
+              >
+              <span class="vote-option-text">{{ option.text }}</span>
+            </label>
+          {% endfor %}
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.5rem;">
+          <button type="submit" id="vote-submit-btn" class="btn btn-primary btn-full">
+            Oyumu Kullan
+          </button>
+          <div style="text-align: center;">
+            <a href="?sonuclar=1" style="font-size: 0.9rem; color: var(--muted); text-decoration: underline;">
+              Oy vermeden sonuçları gör
+            </a>
+          </div>
+        </div>
+      </form>
+    </section>
+  {% endif %}
+
+  <!-- 2. SONUÇLAR ALANI (Oy verildiyse veya canlı AJAX sonrası görünür) -->
+  <section id="results-section" style="{% if not show_results %}display: none;{% endif %}">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3 style="font-size: 1.15rem; color: var(--blue-900);">Anket Sonuçları</h3>
+      <span style="font-size: 0.9rem; color: var(--muted); font-weight: 700;">
+        Toplam <span class="total-votes-count">{{ results_data.total_votes }}</span> oy
+      </span>
+    </div>
+
+    <div class="results-list">
+      {% for opt in results_data.options %}
+        <div class="result-item {% if opt.is_selected %}user-voted{% endif %}">
+          <div class="result-bar-bg" data-percentage="{{ opt.percentage }}" style="width: 0%;"></div>
+          <div class="result-content">
+            <div class="result-label">
+              <span>{{ opt.text }}</span>
+              {% if opt.is_selected %}
+                <span class="vote-badge">✓ Senin Oyun</span>
+              {% endif %}
+            </div>
+            <div class="result-stats">
+              <span class="result-percentage">%{{ opt.percentage }}</span>
+              <span class="result-count">({{ opt.votes_count }} oy)</span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if view_results_only and not user_voted_option %}
+      <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--cream-200);">
+        <a href="{% url 'poll_detail' poll.id %}" class="btn btn-outline btn-sm">
+          &larr; Fikrini Paylaş (Oy Ver)
+        </a>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- Alt Gezinme -->
+  <footer style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--cream-200); padding-top: 1.25rem; margin-top: 2rem;">
     <a href="{% url 'home' %}" class="btn btn-outline btn-sm">
-      &larr; Tüm Anketlere Dön
+      &larr; Tüm Anketler
     </a>
-    <span style="color: var(--muted); font-size: 0.9rem;">
-      Toplam {{ poll.options.count }} seçenek
+    <span style="color: var(--muted); font-size: 0.85rem;">
+      {{ poll.options.count }} seçenek
     </span>
-  </div>
+  </footer>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/poll.js' %}"></script>
 {% endblock %}
