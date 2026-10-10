@@ -43,3 +43,7 @@ staticfiles/
 *.swo
 .DS_Store
 Thumbs.db
+
+
+docs/infos.md
+
