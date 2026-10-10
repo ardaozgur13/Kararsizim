@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}{{ poll.question }} — kararsızım{% endblock %}
+
+{% block content %}
+<div class="card poll-detail-card" style="margin-top: 1rem;">
+  <header style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+    <div>
+      <span class="user-badge" style="font-size: 1rem;">@{{ poll.author.username }}</span>
+      <span style="color: var(--muted); font-size: 0.9rem; margin-left: 0.4rem;">
+        &bull; {{ poll.created_at|naturaltime }}
+      </span>
+    </div>
+
+    {% if user == poll.author %}
+      <form method="post" action="{% url 'delete_poll' poll.id %}" onsubmit="return confirm('Bu anketi kalıcı olarak silmek istediğinden emin misin?');">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger-outline btn-sm">
+          Anketi Sil
+        </button>
+      </form>
+    {% endif %}
+  </header>
+
+  <h1 style="font-size: 1.6rem; margin-bottom: 1.5rem; color: var(--blue-900);">
+    {{ poll.question }}
+  </h1>
+
+  <!-- Seçenekler Listesi (Aşama 2 Önizlemesi) -->
+  <div class="poll-options-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
+    {% for option in poll.options.all %}
+      <div style="background-color: var(--blue-100); color: var(--blue-900); padding: 0.85rem 1.15rem; border-radius: var(--radius-card); font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: space-between;">
+        <span>{{ option.text }}</span>
+        <span style="color: var(--muted); font-size: 0.85rem; font-weight: 600;">Seçenek {{ forloop.counter }}</span>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--cream-200); padding-top: 1.25rem;">
+    <a href="{% url 'home' %}" class="btn btn-outline btn-sm">
+      &larr; Tüm Anketlere Dön
+    </a>
+    <span style="color: var(--muted); font-size: 0.9rem;">
+      Toplam {{ poll.options.count }} seçenek
+    </span>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Anketlerim — kararsızım{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h1 style="font-size: 1.7rem; color: var(--blue-900);">Anketlerim</h1>
+      <p style="color: var(--muted); font-size: 0.95rem; margin-top: 0.25rem;">
+        Topluluğa sorduğun tüm kararsızlıklar ve seçenekler.
+      </p>
+    </div>
+    <a href="{% url 'create_poll' %}" class="btn btn-primary btn-sm">
+      + Yeni Anket Aç
+    </a>
+  </div>
+</div>
+
+{% if polls %}
+  <div class="polls-list">
+    {% for poll in polls %}
+      {% include 'polls/_poll_card.html' with poll=poll %}
+    {% endfor %}
+  </div>
+
+  {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Sayfalama" style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; margin-top: 2rem;">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">
+          &larr; Önceki
+        </a>
+      {% endif %}
+
+      <span style="font-size: 0.9rem; color: var(--muted); font-weight: 600;">
+        Sayfa {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+      </span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">
+          Sonraki &rarr;
+        </a>
+      {% endif %}
+    </nav>
+  {% endif %}
+
+{% else %}
+  <div class="empty-state">
+    <span class="empty-state-icon">📝</span>
+    <h3 style="margin-bottom: 0.5rem; color: var(--blue-900);">Henüz bir anket açmadın</h3>
+    <p class="empty-state-text">
+      Kararsız kaldığın bir konu mu var? Hemen bir anket oluşturup topluluğun fikrini alabilirsin.
+    </p>
+    <a href="{% url 'create_poll' %}" class="btn btn-primary">
+      Hemen Anket Oluştur
+    </a>
+  </div>
+{% endif %}
+{% endblock %}

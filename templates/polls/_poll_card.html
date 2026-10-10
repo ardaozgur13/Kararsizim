@@ -1,0 +1,46 @@
+{% load humanize %}
+
+<article class="card poll-card" id="poll-card-{{ poll.id }}">
+  <header class="poll-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+    <div>
+      <span class="user-badge" style="font-size: 0.9rem;">@{{ poll.author.username }}</span>
+      <span style="color: var(--muted); font-size: 0.85rem; margin-left: 0.35rem;">
+        &bull; {{ poll.created_at|naturaltime }}
+      </span>
+    </div>
+
+    {% if user == poll.author %}
+      <form method="post" action="{% url 'delete_poll' poll.id %}" onsubmit="return confirm('Bu anketi silmek istediğinden emin misin?');" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger-outline btn-sm" aria-label="Anketi sil" title="Anketi sil">
+          Sil
+        </button>
+      </form>
+    {% endif %}
+  </header>
+
+  <h2 style="font-size: 1.25rem; margin-bottom: 1rem;">
+    <a href="{% url 'poll_detail' poll.id %}" style="color: var(--blue-900); text-decoration: none;">
+      {{ poll.question }}
+    </a>
+  </h2>
+
+  <!-- Seçenekler Önizlemesi -->
+  <div class="poll-card-options" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+    {% for option in poll.options.all %}
+      <div style="background-color: var(--blue-100); color: var(--blue-900); padding: 0.55rem 0.9rem; border-radius: var(--radius-input); font-weight: 600; font-size: 0.92rem; display: flex; align-items: center; justify-content: space-between;">
+        <span>{{ option.text }}</span>
+      </div>
+    {% endfor %}
+  </div>
+
+  <footer class="poll-card-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--cream-200); padding-top: 0.75rem; font-size: 0.85rem; color: var(--muted);">
+    <span>
+      <!-- Toplam oy sayısı (Aşama 3'te dinamikleşecek) -->
+      💬 {{ poll.options.count }} seçenek
+    </span>
+    <a href="{% url 'poll_detail' poll.id %}" class="btn btn-outline btn-sm">
+      Ankete Git &rarr;
+    </a>
+  </footer>
+</article>

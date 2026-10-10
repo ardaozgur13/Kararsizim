@@ -27,6 +27,27 @@
       {% include 'polls/_poll_card.html' with poll=poll %}
     {% endfor %}
   </div>
+
+  {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Sayfalama" style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; margin-top: 2rem;">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">
+          &larr; Önceki
+        </a>
+      {% endif %}
+
+      <span style="font-size: 0.9rem; color: var(--muted); font-weight: 600;">
+        Sayfa {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+      </span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">
+          Sonraki &rarr;
+        </a>
+      {% endif %}
+    </nav>
+  {% endif %}
+
 {% else %}
   <div class="empty-state">
     <span class="empty-state-icon">🙂</span>
