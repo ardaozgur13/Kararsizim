@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}kararsızım — Kararsız Kaldığın Konularda Topluluğa Danış{% endblock %}</title>
+  <meta name="description" content="Kararsız kaldığın konularda anket aç, diğer kullanıcılardan fikir ve oy topla.">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <!-- Üst Menü (Navbar) -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="{% url 'home' %}" class="logo" aria-label="kararsızım anasayfa">
+        <span class="logo-icon">⚖</span>
+        <span>kararsızım</span>
+      </a>
+
+      <nav aria-label="Ana navigasyon">
+        <ul class="nav-links">
+          {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'create_poll' %}" class="btn btn-primary btn-sm">
+                + Anket Oluştur
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'my_polls' %}" class="user-badge" title="Profilim ve anketlerim">
+                @{{ user.username }}
+              </a>
+            </li>
+            <li>
+              <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline btn-sm" aria-label="Çıkış yap">
+                  Çıkış
+                </button>
+              </form>
+            </li>
+          {% else %}
+            <li>
+              <a href="{% url 'login' %}" class="btn btn-outline btn-sm">
+                Giriş yap
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'register' %}" class="btn btn-primary btn-sm">
+                Kayıt ol
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Ana İçerik -->
+  <main class="main-content">
+    {% if messages %}
+      <div class="messages-container" role="alert" aria-live="polite">
+        {% for message in messages %}
+          <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %}">
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Alt Bilgi (Footer) -->
+  <footer class="site-footer">
+    <p>&copy; {% now "Y" %} kararsızım &bull; Kararsız kalma, topluluğa sor.</p>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

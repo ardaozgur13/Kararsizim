@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}kararsızım — Kararsız Kaldığın Konularda Topluluğa Danış{% endblock %}
+
+{% block content %}
+<div class="polls-feed-header" style="text-align: center; margin-bottom: 2rem;">
+  <h1 style="font-size: 1.85rem; margin-bottom: 0.5rem;">Ne yapsam acaba? 🤔</h1>
+  <p style="color: var(--muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto;">
+    Aklını kurcalayan seçenekleri paylaş, topluluğun oylarıyla kararını netleştir.
+  </p>
+  <div style="margin-top: 1.25rem;">
+    {% if user.is_authenticated %}
+      <a href="{% url 'create_poll' %}" class="btn btn-primary">
+        + Yeni Anket Oluştur
+      </a>
+    {% else %}
+      <a href="{% url 'login' %}?next={% url 'create_poll' %}" class="btn btn-secondary">
+        Anket oluşturmak için giriş yap
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+{% if polls %}
+  <div class="polls-list">
+    {% for poll in polls %}
+      {% include 'polls/_poll_card.html' with poll=poll %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <span class="empty-state-icon">🙂</span>
+    <h3 style="margin-bottom: 0.5rem; color: var(--blue-900);">Henüz kimse kararsız kalmamış</h3>
+    <p class="empty-state-text">İlk anketi sen aç ve topluluğun fikrini öğrenmeye başla!</p>
+    {% if user.is_authenticated %}
+      <a href="{% url 'create_poll' %}" class="btn btn-primary">
+        İlk Anketi Başlat
+      </a>
+    {% else %}
+      <a href="{% url 'login' %}?next={% url 'create_poll' %}" class="btn btn-primary">
+        Giriş Yap ve Anket Aç
+      </a>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

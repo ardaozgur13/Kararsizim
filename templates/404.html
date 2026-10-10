@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Sayfa Bulunamadı (404) — kararsızım{% endblock %}
+
+{% block content %}
+<div class="card empty-state" style="margin-top: 2rem;">
+  <span class="empty-state-icon">🤔</span>
+  <h2>Sayfa Bulunamadı</h2>
+  <p class="empty-state-text">Aradığın sayfa veya anket mevcut değil ya da silinmiş olabilir.</p>
+  <div>
+    <a href="{% url 'home' %}" class="btn btn-primary">Anasayfaya Dön</a>
+  </div>
+</div>
+{% endblock %}
