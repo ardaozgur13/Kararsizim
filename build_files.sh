@@ -4,7 +4,7 @@ set -e
 echo "=== Vercel Build Başlıyor ==="
 
 # Statik klasörünün varlığını garantiye al
-mkdir -p staticfiles
+mkdir -p staticfiles_build/static
 
 # Python sürümünü belirle
 if command -v python3.11 &>/dev/null; then
